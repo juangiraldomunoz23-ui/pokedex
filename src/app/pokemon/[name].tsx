@@ -1,14 +1,12 @@
 import {
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 
 import { Image } from "expo-image";
-import {
-    useLocalSearchParams,
-} from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 
 import { usePokemonDetail } from "../hooks/usePokemonDetail";
 
@@ -26,7 +24,7 @@ export default function PokemonDetailScreen() {
   if (loading) {
     return (
       <View style={styles.center}>
-        <Text>
+        <Text style={styles.loadingText}>
           Cargando Pokémon...
         </Text>
       </View>
@@ -36,7 +34,7 @@ export default function PokemonDetailScreen() {
   if (error || !pokemon) {
     return (
       <View style={styles.center}>
-        <Text>
+        <Text style={styles.errorText}>
           {error || "Pokémon no encontrado"}
         </Text>
       </View>
@@ -50,55 +48,103 @@ export default function PokemonDetailScreen() {
     pokemon.sprites.front_default;
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      showsVerticalScrollIndicator={false}
+    >
       <View style={styles.hero}>
-        <Text style={styles.number}>#{String(pokemon.id).padStart(3, "0")}</Text>
-        <Text style={styles.title}>{pokemon.name}</Text>
+        <Text style={styles.number}>
+          #{String(pokemon.id).padStart(3, "0")}
+        </Text>
+
+        <Text style={styles.title}>
+          {pokemon.name}
+        </Text>
+
         {image && (
           <Image
-            source={image}
+            source={{ uri: image }}
             style={styles.image}
             contentFit="contain"
             transition={300}
             cachePolicy="disk"
-            accessibilityLabel={`${pokemon.name} oficial artwork`}
+            accessibilityLabel={`${pokemon.name} official artwork`}
           />
         )}
       </View>
 
       <View style={styles.content}>
-        <Text style={styles.sectionTitle}>Tipo</Text>
+        <Text style={styles.sectionTitle}>
+          Tipo
+        </Text>
 
         <View style={styles.types}>
           {pokemon.types.map((item) => (
-            <View key={item.slot} style={styles.type}>
-              <Text style={styles.typeText}>{item.type.name}</Text>
+            <View
+              key={item.slot}
+              style={styles.type}
+            >
+              <Text style={styles.typeText}>
+                {item.type.name}
+              </Text>
             </View>
           ))}
         </View>
 
-        <Text style={styles.sectionTitle}>Estadísticas base</Text>
+        <Text style={styles.sectionTitle}>
+          Estadísticas base
+        </Text>
 
         {pokemon.stats.map((item) => (
-          <View key={item.stat.name} style={styles.stat}>
+          <View
+            key={item.stat.name}
+            style={styles.stat}
+          >
             <View style={styles.statHeader}>
-              <Text style={styles.statName}>{item.stat.name}</Text>
-              <Text style={styles.statValue}>{item.base_stat}</Text>
+              <Text style={styles.statName}>
+                {item.stat.name}
+              </Text>
+
+              <Text style={styles.statValue}>
+                {item.base_stat}
+              </Text>
             </View>
+
             <View style={styles.track}>
-              <View style={[styles.fill, { width: `${Math.min(item.base_stat, 100)}%` }]} />
+              <View
+                style={[
+                  styles.fill,
+                  {
+                    width: `${Math.min(
+                      item.base_stat,
+                      100
+                    )}%`,
+                  },
+                ]}
+              />
             </View>
           </View>
         ))}
 
         <View style={styles.infoRow}>
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>ALTURA</Text>
-            <Text style={styles.infoValue}>{(pokemon.height / 10).toFixed(1)} m</Text>
+            <Text style={styles.infoLabel}>
+              ALTURA
+            </Text>
+
+            <Text style={styles.infoValue}>
+              {(pokemon.height / 10).toFixed(1)} m
+            </Text>
           </View>
+
           <View style={styles.infoCard}>
-            <Text style={styles.infoLabel}>PESO</Text>
-            <Text style={styles.infoValue}>{(pokemon.weight / 10).toFixed(1)} kg</Text>
+            <Text style={styles.infoLabel}>
+              PESO
+            </Text>
+
+            <Text style={styles.infoValue}>
+              {(pokemon.weight / 10).toFixed(1)} kg
+            </Text>
           </View>
         </View>
       </View>
@@ -117,6 +163,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#0B1020",
+    paddingHorizontal: 20,
+  },
+
+  loadingText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "700",
+  },
+
+  errorText: {
+    color: "#FF3CAC",
+    fontSize: 16,
+    fontWeight: "700",
+    textAlign: "center",
   },
 
   hero: {
@@ -162,7 +222,6 @@ const styles = StyleSheet.create({
     color: "#FFFFFF",
     fontSize: 21,
     fontWeight: "900",
-    alignSelf: "stretch",
     marginBottom: 12,
     marginTop: 24,
   },
@@ -170,6 +229,7 @@ const styles = StyleSheet.create({
   types: {
     flexDirection: "row",
     gap: 8,
+    flexWrap: "wrap",
   },
 
   type: {
