@@ -13,13 +13,16 @@ export const usePokemonList = () => {
     const fetchPokemon = async () => {
       try {
         setLoading(true);
+        setError(null);
 
         const response = await fetch(
           "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0"
         );
 
         if (!response.ok) {
-          throw new Error("Error al obtener los Pokémon");
+          throw new Error(
+            "Error al obtener los Pokémon"
+          );
         }
 
         const data: PokemonListResponse =
@@ -27,7 +30,10 @@ export const usePokemonList = () => {
 
         setPokemon(data.results);
       } catch (err) {
-        setError("No se pudieron cargar los Pokémon");
+        setPokemon([]);
+        setError(
+          "No se pudieron cargar los Pokémon"
+        );
       } finally {
         setLoading(false);
       }
