@@ -13,18 +13,26 @@ export const usePokemonDetail = (name: string) => {
 
   useEffect(() => {
     const fetchPokemon = async () => {
-      if (!name) return;
+      if (!name) {
+        setPokemon(null);
+        setError("No se recibió el nombre del Pokémon");
+        setLoading(false);
+        return;
+      }
 
       try {
         setLoading(true);
         setError(null);
+        setPokemon(null);
 
         const response = await fetch(
           `https://pokeapi.co/api/v2/pokemon/${name}`
         );
 
         if (!response.ok) {
-          throw new Error("Pokémon no encontrado");
+          throw new Error(
+            "Pokémon no encontrado"
+          );
         }
 
         const data: PokemonDetail =
@@ -32,7 +40,10 @@ export const usePokemonDetail = (name: string) => {
 
         setPokemon(data);
       } catch (err) {
-        setError("No se pudo cargar el Pokémon");
+        setPokemon(null);
+        setError(
+          "No se pudo cargar el Pokémon"
+        );
       } finally {
         setLoading(false);
       }
