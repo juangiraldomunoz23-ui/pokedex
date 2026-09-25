@@ -10,20 +10,33 @@ export interface PokemonListResponse {
   results: PokemonListItem[];
 }
 
+export interface PokemonTypeInfo {
+  name: string;
+  url: string;
+}
+
 export interface PokemonType {
   slot: number;
-  type: {
-    name: string;
-    url: string;
-  };
+  type: PokemonTypeInfo;
+}
+
+export interface PokemonStatInfo {
+  name: string;
+  url: string;
 }
 
 export interface PokemonStat {
   base_stat: number;
   effort: number;
-  stat: {
-    name: string;
-    url: string;
+  stat: PokemonStatInfo;
+}
+
+export interface PokemonSprites {
+  front_default: string | null;
+  other?: {
+    ["official-artwork"]?: {
+      front_default: string | null;
+    };
   };
 }
 
@@ -32,17 +45,7 @@ export interface PokemonDetail {
   name: string;
   height: number;
   weight: number;
-
-  sprites: {
-    front_default: string | null;
-    other?: {
-      ["official-artwork"]?: {
-        front_default: string | null;
-      };
-    };
-  };
-
+  sprites: PokemonSprites;
   types: PokemonType[];
-
   stats: PokemonStat[];
 }
